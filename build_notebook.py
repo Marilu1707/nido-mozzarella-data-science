@@ -8,8 +8,8 @@ code = lambda s: cells.append(nbf.v4.new_code_cell(s.strip("\n")))
 md("""
 # 🧀 Nido Mozzarella: ¿qué mueve la oferta y el precio de la mozzarella en Argentina?
 
-**Data Science II: Machine Learning para la Ciencia de Datos · Coderhouse**
-**Primera entrega: Obtención de insights a partir de visualizaciones**
+**Data Science II: Machine Learning para la Ciencia de Datos · Coderhouse**  
+**Primera entrega: Obtención de insights a partir de visualizaciones**  
 **Autora:** María Luján Massironi
 
 ---

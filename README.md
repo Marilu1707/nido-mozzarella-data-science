@@ -1,7 +1,7 @@
 # 🧀 Nido Mozzarella: qué mueve la oferta y el precio del queso
 
-**Data Science II: Machine Learning para la Ciencia de Datos · Coderhouse**
-**Primera entrega: Obtención de insights a partir de visualizaciones**
+**Data Science II: Machine Learning para la Ciencia de Datos · Coderhouse**  
+**Primera entrega: Obtención de insights a partir de visualizaciones**  
 **Autora:** María Luján Massironi
 
 ---
