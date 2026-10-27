@@ -1,0 +1,6 @@
+,R2,MSE,RMSE (kt),Error abs. mediano (kt)
+AdaBoost,0.646,11.399,3.376,2.450
+XGBoost,0.643,11.486,3.389,2.194
+GradientBoosting,0.603,12.800,3.578,2.180
+LightGBM,0.581,13.486,3.672,2.086
+Base: mismo mes año anterior,0.440,18.029,4.246,2.952
