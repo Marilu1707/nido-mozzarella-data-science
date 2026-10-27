@@ -1,31 +1,35 @@
-# 🧀 Nido Mozzarella: qué mueve la oferta y el precio del queso
+# 🧀 Nido Mozzarella: oferta, precio y pronóstico de la producción de queso
 
-**Data Science II: Machine Learning para la Ciencia de Datos · Coderhouse**  
-**Primera entrega:** obtención de insights a partir de visualizaciones  
-**Entrega Final:** entrenamiento y optimización de modelos de Machine Learning  
+**Data Science II: Machine Learning para la Ciencia de Datos · Coderhouse**
+
 **Autora:** María Luján Massironi
 
 ---
 
 ## De qué se trata
 
-**Nido Mozzarella** es una pyme que elabora y vende mozzarella. Este proyecto analiza el mercado en el que opera el negocio. Se cruzan datos oficiales de **producción de quesos** y **precios al consumidor** con **clima**, **feriados** e **inflación**, y se buscan respuestas para planificar la producción, las compras y los precios.
+**Nido Mozzarella** es una pyme que elabora y vende mozzarella. Este proyecto analiza el mercado en el que opera el negocio y arma un modelo para anticipar la oferta de queso. Cruza datos oficiales de **producción de quesos** y **precios al consumidor** con **clima**, **feriados** e **inflación**, y busca respuestas para planificar la producción, las compras y los precios.
 
-El proyecto retoma el dataset del [portfolio interactivo Nido Mozzarella](https://github.com/Marilu1707/portfolio_interactivo), de la pre-entrega anterior, y lo enriquece con datos de APIs públicas.
+El proyecto retoma el dataset del [portfolio interactivo Nido Mozzarella](https://github.com/Marilu1707/portfolio_interactivo) y lo enriquece con datos de APIs públicas.
 
 **Audiencia:** dueños y gerencia, compras y comercial de Nido Mozzarella.
 
-## Contenido del repositorio
+## Estructura del repositorio
 
-| Archivo | Qué es |
-|---------|--------|
-| `Nido_Mozzarella_EDA.ipynb` | **Primera entrega.** Contiene el abstracto, las preguntas, la descarga desde las APIs, el análisis de nulos (missingno), la limpieza, el EDA, los insights y el modelado. |
-| `Nido_Mozzarella_Entrega_Final.ipynb` | **Entrega Final.** Pronóstico de producción mensual (regresión): ingeniería de atributos, validación cruzada temporal, optimización de hiperparámetros, selección de modelo, SHAP y pronóstico. |
-| `Nido_Mozzarella_Presentacion.pdf` | Presentación ejecutiva de la primera entrega (12 slides). |
-| `data/raw/` | Datos crudos, tal como los devuelven las APIs. |
-| `data/processed/dataset_nido_mozzarella.csv` | Dataset mensual final: 138 filas × 22 columnas, de 01/2015 a 06/2026. |
-| `images/` | Gráficos que exporta el notebook. |
-| `requirements.txt` | Librerías necesarias para correr el notebook. |
+```
+├── 1-pre-entrega/                      Obtención de insights a partir de visualizaciones
+│   ├── Nido_Mozzarella_EDA.ipynb       Notebook: APIs, limpieza, nulos, EDA, insights y primer modelado
+│   ├── Nido_Mozzarella_Presentacion.pdf Presentación ejecutiva (12 slides)
+│   ├── data/raw/                       Datos crudos, tal como los devuelven las APIs
+│   ├── data/processed/                 Dataset mensual final (138 filas × 22 columnas) y resultados
+│   └── images/                         Gráficos del notebook
+├── 2-entrega-final/                    Entrenamiento y optimización de modelos de Machine Learning
+│   ├── Nido_Mozzarella_Entrega_Final.ipynb  Notebook: ingeniería de atributos, CV temporal, optimización, SHAP y pronóstico
+│   ├── data/processed/                 Dataset de entrada (copia de la pre-entrega) y pronóstico
+│   └── images/                         Gráficos del notebook
+├── requirements.txt
+└── README.md
+```
 
 ## Fuentes de datos (APIs públicas)
 
@@ -38,7 +42,7 @@ El proyecto retoma el dataset del [portfolio interactivo Nido Mozzarella](https:
 | ArgentinaDatos | [api.argentinadatos.com](https://api.argentinadatos.com/) | Feriados nacionales (desde 2021) |
 | Portfolio Nido Mozzarella | GitHub raw | Participación de la mozzarella en el consumo de quesos |
 
-## Preguntas e hipótesis
+## 1. Pre-entrega: insights a partir de visualizaciones
 
 | # | Hipótesis | Resultado |
 |---|-----------|-----------|
@@ -50,36 +54,17 @@ El proyecto retoma el dataset del [portfolio interactivo Nido Mozzarella](https:
 | H6 | El queso es más caro cuando hay menos producción | ✅ +4 a 5% de abril a julio, -5% en diciembre y enero. |
 | H7 | Los feriados restan producción | ❌ El efecto desaparece al controlar por el mes. |
 
-## Cómo correrlo
-
-```bash
-pip install -r requirements.txt
-jupyter notebook Nido_Mozzarella_EDA.ipynb
-```
-
-También se puede abrir en Google Colab. Con `DESCARGAR = True` el notebook descarga los datos de las APIs. Con `False` usa los CSV de `data/raw/`.
-
-## Modelado: pronóstico de producción mensual
-
-Siguiendo la estructura del notebook de la Datathon del curso (`Colab_final_datathon_David.ipynb`), el notebook entrena **4 modelos de ensamble** y los compara con una línea de base. La base es la regla "igual que el mismo mes del año anterior". Para evaluar se separan los últimos 24 meses (división temporal).
-
-| Modelo | R² | RMSE (miles de t) |
-|--------|---:|------------------:|
-| AdaBoost | 0,65 | 3,38 |
-| XGBoost | 0,64 | 3,39 |
-| GradientBoosting | 0,60 | 3,58 |
-| LightGBM | 0,58 | 3,67 |
-| Base: mismo mes del año anterior | 0,44 | 4,25 |
-
-El mejor modelo (AdaBoost) reduce el error un 20% frente a la base. Con él se pronostican julio a diciembre de 2026 (`data/processed/pronostico_2026.csv`), con un pico de unos 26,8 mil t en octubre.
-
-## Entrega Final: modelo optimizado
+## 2. Entrega Final: pronóstico de la producción mensual
 
 **Problema:** predecir cuántas miles de toneladas de queso se van a producir el mes siguiente (regresión).
 
-- **Ingeniería de atributos:** rezagos (1, 2, 3 y 12 meses), promedios móviles, variación interanual, rezagos de dulce de leche y precio de la leche, encoding cíclico del mes, One Hot Encoding de la estación y estandarización con `StandardScaler` dentro de un `Pipeline`.
+- **Ingeniería de atributos:**
+  - Rezagos de 1, 2, 3 y 12 meses, promedios móviles y variación interanual.
+  - Rezagos de la producción de dulce de leche y del precio de la leche.
+  - Encoding cíclico del mes y One Hot Encoding de la estación.
+  - Estandarización con `StandardScaler` dentro de un `Pipeline`.
 - **Modelos:** Ridge, Random Forest, Gradient Boosting, XGBoost y un ensamble que promedia los cuatro.
-- **Validación:** `TimeSeriesSplit` (5 folds) en el entrenamiento y test con los últimos 24 meses.
+- **Validación:** `TimeSeriesSplit` de 5 folds en el entrenamiento, y test con los últimos 24 meses.
 - **Optimización:** `GridSearchCV` para Ridge y `RandomizedSearchCV` para los modelos de árboles.
 
 | Modelo | RMSE validación cruzada | RMSE test | R² test |
@@ -91,7 +76,17 @@ El mejor modelo (AdaBoost) reduce el error un 20% frente a la base. Con él se p
 | Gradient Boosting optimizado | 3,85 | 3,49 | 0,62 |
 | Base: mismo mes del año anterior | 3,87 | 4,25 | 0,44 |
 
-El modelo elegido (por menor RMSE en validación cruzada) reduce el error un **17%** en test frente a la regla simple. SHAP muestra que las variables que más pesan son el mismo mes del año anterior, el mes anterior y el mes del año.
+El modelo se eligió por el menor RMSE en validación cruzada. En el test reduce el error un **17%** frente a la regla simple. Según SHAP, las variables que más pesan son el mismo mes del año anterior, el mes anterior y el mes del año. El pronóstico para la segunda mitad de 2026 marca un pico de unos 27 mil toneladas en septiembre.
+
+## Cómo correrlo
+
+```bash
+pip install -r requirements.txt
+cd 1-pre-entrega && jupyter notebook Nido_Mozzarella_EDA.ipynb
+cd 2-entrega-final && jupyter notebook Nido_Mozzarella_Entrega_Final.ipynb
+```
+
+También se pueden abrir en Google Colab. En la pre-entrega, con `DESCARGAR = True` el notebook descarga los datos de las APIs, y con `False` usa los CSV de `data/raw/`.
 
 ## Próximo paso
 
